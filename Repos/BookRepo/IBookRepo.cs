@@ -14,6 +14,11 @@ namespace book_store_ziad.Repos.BookRepo
 
         public void DeleteBook(int id);
 
-        public void UpdateBook(BookDto bookDto);
+        public void UpdateBook(BookDto bookDto,int id);
+
+        public AddBookAuthorGenreDto GetBookAuthorGenre(int id);
+
+        public void DeleteBookAuthorGenre(int id);
+        public void JoinBookToAuthor(int authorId, int bookId);
     }
 }

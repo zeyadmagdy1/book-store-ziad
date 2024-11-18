@@ -33,6 +33,30 @@ namespace book_store_ziad.Controllers
             _repo.AddBook(bookDto);
             return Ok();
         }
-
+        [HttpGet("{id}")]
+        public IActionResult GetBook(int id) {
+            var result = _repo.GetBook(id);
+            return Ok(result);
+        }
+        [HttpGet("getBookAuthorGenre{id}")]
+        public IActionResult getBookAuthorGenre(int id) 
+        {
+            var result = _repo.GetBookAuthorGenre(id);
+            return Ok(result);
+        }
+        [HttpPut("{id}")]
+        public IActionResult UpdateBook(int id, BookDto bookDto) 
+        {
+            _repo.UpdateBook(bookDto, id);
+            return Ok();
+        }
+        [HttpDelete("{id}")]
+        public IActionResult DeleteBook(int id) {  _repo.DeleteBook(id); return Ok(); }
+        [HttpPost("JoinBookToAuthor")]
+        public IActionResult JoinBookToAuthor(int authorId,int bookId) 
+        { 
+           _repo.JoinBookToAuthor(authorId,bookId);
+            return Ok();
+        }
     }
 }

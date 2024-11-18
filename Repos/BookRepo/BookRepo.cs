@@ -44,13 +44,42 @@ namespace book_store_ziad.Repos.BookRepo
 
         public void DeleteBook(int id)
         {
-            throw new NotImplementedException();
+            var book = _context.books.FirstOrDefault(x => x.BookId == id);
+            if (book == null)
+            {
+                throw new Exception("Not Found");
+            }
+            _context.books.Remove(book);
+            _context.SaveChanges();
         }
 
         public BookDto GetBook(int id)
         {
-            throw new NotImplementedException();
+            var result = _context.books.FirstOrDefault(x => x.BookId ==id);
+            return new BookDto {
+                DateTime = result.DateTime,
+                Title = result.Title,
+            };
         }
+        public AddBookAuthorGenreDto GetBookAuthorGenre(int id) 
+        { 
+            var book = _context.books
+                .Include(x =>x.authors)
+                .Include(x => x.genres)
+                .FirstOrDefault(x =>x.BookId ==id);
+            return new AddBookAuthorGenreDto {
+                Title =book.Title,
+                DateTime = book.DateTime,
+                authorsDtos = book.authors.Select(x => new AuthorDto 
+                {   
+                    AuthorName = x.AuthorName,
+                }).ToList(),
+                genreDtos=book.genres.Select(x => new GenreDto {
+                     GenreName=x.GenreName,
+                }).ToList(),
+            };  
+        }
+
 
         public List<AddBookAuthorGenreDto> GetBooksAuthorsGenres()
         {
@@ -70,9 +99,37 @@ namespace book_store_ziad.Repos.BookRepo
             return result;
         }
 
-        public void UpdateBook(BookDto bookDto)
+        public void UpdateBook(BookDto bookDto, int id)
         {
-            throw new NotImplementedException();
+            var book = _context.books.FirstOrDefault(x => x.BookId == id);
+            book.Title = bookDto.Title;
+            book.DateTime = bookDto.DateTime;
+            _context.SaveChanges();
         }
+
+        public void DeleteBookAuthorGenre(int id) {
+            var book = _context.books
+                .Include(x => x.authors)
+                .Include (x => x.genres)
+                .FirstOrDefault(x => x.BookId == id);
+            _context.books.Remove(book);
+            _context.SaveChanges();
+        }
+
+
+        public void JoinBookToAuthor(int authorId, int bookId) 
+        {
+            var book = _context
+                .books
+                .Include(x => x.authors)
+                .FirstOrDefault(x => x.BookId == bookId);
+
+            var author = _context.authors.FirstOrDefault(x => x.AuthorId == authorId);
+
+            book.authors.Add(author);
+            _context.SaveChanges();
+                
+        }
+
     }
 }

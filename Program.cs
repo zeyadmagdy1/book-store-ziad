@@ -1,6 +1,8 @@
 
 using book_store_ziad.Data;
+using book_store_ziad.Repos.AuthorRepo;
 using book_store_ziad.Repos.BookRepo;
+using book_store_ziad.Repos.GenreRepo;
 using Microsoft.EntityFrameworkCore;
 
 namespace book_store_ziad
@@ -21,6 +23,8 @@ namespace book_store_ziad
             var connection = builder.Configuration.GetConnectionString("MyDeafult");
             builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connection));
             builder.Services.AddScoped<IBookRepo,BookRepo>();
+            builder.Services.AddScoped<IAuthorRepo,AuthorRepo>();
+            builder.Services.AddScoped<IGenreRepo,GenreRepo>();
 
             var app = builder.Build();
 

@@ -12,7 +12,7 @@ using book_store_ziad.Data;
 namespace book_store_ziad.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241118152313_firstMigi")]
+    [Migration("20241118203110_firstMigi")]
     partial class firstMigi
     {
         /// <inheritdoc />
