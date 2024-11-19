@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using book_store_ziad.Data;
 
@@ -11,9 +12,11 @@ using book_store_ziad.Data;
 namespace book_store_ziad.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241119063612_firstMigi")]
+    partial class firstMigi
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,28 +92,6 @@ namespace book_store_ziad.Migrations
                     b.ToTable("books");
                 });
 
-            modelBuilder.Entity("book_store_ziad.Models.CeridetCardd.CeridetCard", b =>
-                {
-                    b.Property<int>("CeridetCardDtoId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CeridetCardDtoId"));
-
-                    b.Property<int>("AuthorId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CeridetCardName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("CeridetCardDtoId");
-
-                    b.HasIndex("AuthorId");
-
-                    b.ToTable("ceridetCards");
-                });
-
             modelBuilder.Entity("book_store_ziad.Models.Genree.Genre", b =>
                 {
                     b.Property<int>("GenreId")
@@ -126,29 +107,6 @@ namespace book_store_ziad.Migrations
                     b.HasKey("GenreId");
 
                     b.ToTable("Genres");
-                });
-
-            modelBuilder.Entity("book_store_ziad.Models.IdentityCardd.IdentityCard", b =>
-                {
-                    b.Property<int>("IdentityCardId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdentityCardId"));
-
-                    b.Property<int>("AuthorId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("IdentityCardName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("IdentityCardId");
-
-                    b.HasIndex("AuthorId")
-                        .IsUnique();
-
-                    b.ToTable("identityCards");
                 });
 
             modelBuilder.Entity("AuthorBook", b =>
@@ -178,36 +136,6 @@ namespace book_store_ziad.Migrations
                         .WithMany()
                         .HasForeignKey("genresGenreId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("book_store_ziad.Models.CeridetCardd.CeridetCard", b =>
-                {
-                    b.HasOne("book_store_ziad.Models.Authorr.Author", "Author")
-                        .WithMany("ceridetCards")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Author");
-                });
-
-            modelBuilder.Entity("book_store_ziad.Models.IdentityCardd.IdentityCard", b =>
-                {
-                    b.HasOne("book_store_ziad.Models.Authorr.Author", "Author")
-                        .WithOne("identityCard")
-                        .HasForeignKey("book_store_ziad.Models.IdentityCardd.IdentityCard", "AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Author");
-                });
-
-            modelBuilder.Entity("book_store_ziad.Models.Authorr.Author", b =>
-                {
-                    b.Navigation("ceridetCards");
-
-                    b.Navigation("identityCard")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

@@ -10,19 +10,19 @@ namespace book_store_ziad.Controllers
     public class BookController : ControllerBase
     {
         private readonly IBookRepo _repo;
-        public BookController(IBookRepo repo) 
-        { 
+        public BookController(IBookRepo repo)
+        {
             _repo = repo;
         }
 
         [HttpGet("GetAllBooksAuthorsGenres")]
         public IActionResult GetAllBooksAuthorsGenres() {
-            var result =_repo.GetBooksAuthorsGenres();
+            var result = _repo.GetBooksAuthorsGenres();
             return Ok(result);
         }
 
         [HttpPost("AddBooksAuthorsGenres")]
-        public IActionResult AddBooksAuthorsGenres(AddBookAuthorGenreDto addBookAuthorGenreDto) 
+        public IActionResult AddBooksAuthorsGenres(AddBookAuthorGenreDto addBookAuthorGenreDto)
         {
             _repo.AddBookAuthorGenre(addBookAuthorGenreDto);
             return Ok();
@@ -39,23 +39,36 @@ namespace book_store_ziad.Controllers
             return Ok(result);
         }
         [HttpGet("getBookAuthorGenre{id}")]
-        public IActionResult getBookAuthorGenre(int id) 
+        public IActionResult getBookAuthorGenre(int id)
         {
             var result = _repo.GetBookAuthorGenre(id);
             return Ok(result);
         }
         [HttpPut("{id}")]
-        public IActionResult UpdateBook(int id, BookDto bookDto) 
+        public IActionResult UpdateBook(int id, BookDto bookDto)
         {
             _repo.UpdateBook(bookDto, id);
             return Ok();
         }
         [HttpDelete("{id}")]
-        public IActionResult DeleteBook(int id) {  _repo.DeleteBook(id); return Ok(); }
+        public IActionResult DeleteBook(int id) { _repo.DeleteBook(id); return Ok(); }
         [HttpPost("JoinBookToAuthor")]
-        public IActionResult JoinBookToAuthor(int authorId,int bookId) 
-        { 
-           _repo.JoinBookToAuthor(authorId,bookId);
+        public IActionResult JoinBookToAuthor(int authorId, int bookId)
+        {
+            _repo.JoinBookToAuthor(authorId, bookId);
+            return Ok();
+        }
+        [HttpPut("UpdateBookAuthorGenre{id}")]
+        public IActionResult UpdateBookAuthorGenre(int id, AddBookAuthorGenreDto addBookAuthorGenreDto)
+        {
+            _repo.UpdateBookAuthorGenre(id, addBookAuthorGenreDto);
+            return Ok();
+        }
+
+        [HttpPost("JoinBookGenre")]
+        public IActionResult JoinBookGenre(int bookId,int genreId)
+        {
+            _repo.JoinBookGenre(bookId, genreId);
             return Ok();
         }
     }

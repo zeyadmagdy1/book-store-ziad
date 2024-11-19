@@ -1,4 +1,6 @@
 ﻿using book_store_ziad.Models.Bookk;
+using book_store_ziad.Models.CeridetCardd;
+using book_store_ziad.Models.IdentityCardd;
 using System.ComponentModel.DataAnnotations;
 
 namespace book_store_ziad.Models.Authorr
@@ -13,6 +15,9 @@ namespace book_store_ziad.Models.Authorr
 
         public List<Book> books { get; set; }
 
+        public List<CeridetCard>ceridetCards { get; set; }
+
+        public IdentityCard identityCard { get; set; }
 
     }
 }

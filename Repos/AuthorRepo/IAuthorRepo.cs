@@ -8,7 +8,9 @@ namespace book_store_ziad.Repos.AuthorRepo
 
         public List<AuthorDto> GetAuthorList();
 
+        public List<AddAndGetAll> GetAllIdeantity();
 
+         public void AddAllIdeantity(AddAndGetAll addAndGetAll);
 
     }
 }

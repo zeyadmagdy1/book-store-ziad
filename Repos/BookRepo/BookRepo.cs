@@ -27,6 +27,21 @@ namespace book_store_ziad.Repos.BookRepo
 
         public void AddBookAuthorGenre(AddBookAuthorGenreDto addBookAuthorGenreDto)
         {
+            var listOfDbNamesOfGenres =_context.Genres.Select(x => x.GenreName).ToList();
+
+            var listOfDtoNamesOfGenres=addBookAuthorGenreDto
+                .genreDtos
+                .Select(x => x.GenreName)
+                .Distinct()
+                .ToList();
+
+            var duplicated = listOfDtoNamesOfGenres.Where(x => listOfDbNamesOfGenres.Contains(x)).ToList();
+            if(duplicated.Any())
+            {
+                throw new Exception("Genre is duplicated");
+            }
+
+
             Book book = new Book {
                 Title = addBookAuthorGenreDto.Title,
                 DateTime = addBookAuthorGenreDto.DateTime,
@@ -56,6 +71,10 @@ namespace book_store_ziad.Repos.BookRepo
         public BookDto GetBook(int id)
         {
             var result = _context.books.FirstOrDefault(x => x.BookId ==id);
+            if (result == null)
+            {
+                throw new Exception($"Book {id} is not a book");
+            }
             return new BookDto {
                 DateTime = result.DateTime,
                 Title = result.Title,
@@ -67,6 +86,10 @@ namespace book_store_ziad.Repos.BookRepo
                 .Include(x =>x.authors)
                 .Include(x => x.genres)
                 .FirstOrDefault(x =>x.BookId ==id);
+            if (book == null)
+            {
+                throw new Exception($"Book {id} is not a book");
+            }
             return new AddBookAuthorGenreDto {
                 Title =book.Title,
                 DateTime = book.DateTime,
@@ -102,6 +125,10 @@ namespace book_store_ziad.Repos.BookRepo
         public void UpdateBook(BookDto bookDto, int id)
         {
             var book = _context.books.FirstOrDefault(x => x.BookId == id);
+            if (book == null)
+            {
+                throw new Exception($"Book {id} is not a book");
+            }
             book.Title = bookDto.Title;
             book.DateTime = bookDto.DateTime;
             _context.SaveChanges();
@@ -112,6 +139,10 @@ namespace book_store_ziad.Repos.BookRepo
                 .Include(x => x.authors)
                 .Include (x => x.genres)
                 .FirstOrDefault(x => x.BookId == id);
+            if (book == null)
+            {
+                throw new Exception($"Book {id} is not a book");
+            }
             _context.books.Remove(book);
             _context.SaveChanges();
         }
@@ -128,7 +159,38 @@ namespace book_store_ziad.Repos.BookRepo
 
             book.authors.Add(author);
             _context.SaveChanges();
-                
+
+        }
+
+        public void UpdateBookAuthorGenre(int id, AddBookAuthorGenreDto addBookAuthorGenreDto)
+        {
+            var book = _context
+                .books
+                .Include(x => x.authors)
+                .Include(x => x.genres)
+                .FirstOrDefault(x => x.BookId==id);
+            book.Title= addBookAuthorGenreDto.Title;
+
+            book.DateTime= addBookAuthorGenreDto.DateTime;
+            book.authors = addBookAuthorGenreDto.authorsDtos.Select(x => new Author
+            {
+                AuthorName = x.AuthorName,
+            }).ToList();
+            book.genres = addBookAuthorGenreDto.genreDtos.Select(x => new Genre {
+                GenreName = x.GenreName,
+            }).ToList();
+            _context.SaveChanges();
+        }
+
+        public void JoinBookGenre(int bookId,int genreId)
+        {
+            var book =_context.books
+                .Include(x => x.genres)
+                .FirstOrDefault(x => x.BookId==bookId);
+            var genre = _context.Genres.FirstOrDefault(x => x.GenreId==genreId);
+
+            book.genres.Add(genre);
+            _context.SaveChanges();
         }
 
     }

@@ -15,8 +15,8 @@ namespace book_store_ziad.Controllers
         {
             _repo = repo;
         }
-        [HttpGet]
-        public IActionResult GetAll() 
+        [HttpGet("getAllAuthors")]
+        public IActionResult getAllAuthors() 
         {
             var result =_repo.GetAuthorList();
             return Ok(result);
@@ -27,5 +27,19 @@ namespace book_store_ziad.Controllers
             _repo.AddAuthor(authorDto);
             return Ok();
         }
+
+        [HttpGet("GetAllIdeantity")]
+        public IActionResult GetAllIdeantity(AddAndGetAll addAndGetAll)
+        {
+            var result = _repo.GetAllIdeantity();
+            return Ok(result);
+        }
+        [HttpPost("AddAllIdeantity")]
+        public IActionResult AddAllIdeantity(AddAndGetAll addAndGetAll)
+        {
+            _repo.AddAllIdeantity(addAndGetAll);
+            return Ok();
+        }
+
     }
 }
